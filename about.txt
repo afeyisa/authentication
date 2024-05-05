@@ -1,0 +1,16 @@
+ADDITIONAL PACKAGES NOT MENT FOR FINANCE BACK END 
+BUT FOR AUTHORIZATION
+
+***************************************
+*      PACKAGE NAME                   *
+***************************************
+*      body-parser                    *
+*      bcrypt                         *
+*      pg                             *
+*      express-session                *
+*      passport                       *  
+*      passport-local                 *
+***************************************
+
+
+
