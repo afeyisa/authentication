@@ -34,5 +34,4 @@ router.use(express.json());
     .route('/paidsalary')
     .get(financeController.getPaidSalary);
 
-
     module.exports = router;

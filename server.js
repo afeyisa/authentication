@@ -3,12 +3,12 @@
    // this code should be in the server 
    // and this server must be replace with the project server i mean the server which include all other pages
    
-   const dotenv=require('dotenv');    
-    const express = require('express');
-    const path = require('path');
-   
-    const cors = require('cors');
+    const dotenv    = require('dotenv');    
+    const express  = require('express');
+    const path     = require('path');
+    const cors     = require('cors');
     const mongoose = require('mongoose');
+    
     dotenv.config({path: './config.env'});
     // import the finance 
     const finance = require('./Finance/finance');
