@@ -23,7 +23,8 @@
     const mongoose    = require('mongoose');
     const session     = require('express-session');
     const passport    = require('passport');
-    const routeTo     = require('./authentication/router/route');
+    const routeTo     = require('./router/route');
+    const mysql       = require('mysql2');
   
 
 
@@ -52,8 +53,6 @@
     // take care of order on this part
 
     server.use(routeTo);   
-
-    // configuration database and port numbers
     mongoose.connect('mongodb://localhost:27017/Tina_bookstore').then(()=>console.log('data base connected'));
 
     const port= 5000;

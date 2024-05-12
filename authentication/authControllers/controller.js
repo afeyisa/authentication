@@ -1,15 +1,14 @@
-/* thank you  lord Jesus Christ  for every thing🙏🙏🙏 */
-/* author feyisa kenenisa */
+/* Thank you  Lord Jesus Christ  🙏🙏🙏 */
+/* author Feyisa Kenenisa */
 
 //strategy is needed for logging in options
 const { Strategy } = require("passport-local").Strategy;
 const usersSchema  = require('../models/users');
 const path         = require('path');
 const bcrypt       = require('bcrypt');
-const passport    = require('passport');
+const passport     = require('passport');
 
-
-/*******************home part************************************************************** */
+/*******************handles home part************************************************************** */
 
 // sends home page to the req
 exports.home  =  ( (req, res) => {
@@ -22,7 +21,7 @@ exports.home  =  ( (req, res) => {
 /* ****************************************************************************************** */
 
 
-/* ************************* registiration part************************************************/
+/* *************************handles registiration part************************************************/
 
 exports.register  =  ((req, res) => {
     try{
@@ -87,7 +86,7 @@ exports.createUser = async(req,res)=>{
 
 
 
-/*******************************login part***************************************************************** */
+/*******************************handles login part***************************************************************** */
 
 // send login page to the req
 exports.login  =  ((req, res) => {
@@ -148,7 +147,7 @@ exports.authenticate =
 
 
 
-/* ********************book store part******************************************************************** */
+/* ********************handles book store part******************************************************************** */
 
 // this page is the protect page in this system
 exports.bookStore  =  (req, res) => {
