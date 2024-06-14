@@ -1,0 +1,23 @@
+[    
+      {
+        "id": "1",
+        "title": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "isbn": "9780743273565",
+        "genre": "Classic",
+        "description": "A tragic love story set in the roaring 20s.",
+        "price": 10.99,
+        "quantity": 50
+      },
+      {
+        "id": "2",
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "isbn": "9780061120084",
+        "genre": "Classic",
+        "description": "A powerful story of racial injustice in the American South.",
+        "price": 9.99,
+        "quantity": 30
+      }
+      
+]

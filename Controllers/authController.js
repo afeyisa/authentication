@@ -7,53 +7,126 @@ const usersSchema  = require('../models/users');
 const path         = require('path');
 const bcrypt       = require('bcrypt');
 const passport     = require('passport');
+const dotenv       = require('dotenv'); 
+const fs           = require('node:fs');   
+dotenv.config({path: './config.env'});
+
+
+exports.root = ((req, res) =>{
+    res.redirect('/home');
+
+});
 
 /*******************handles home part************************************************************** */
 
-// sends home page to the req
+// sends home page to the req user is new
+// sends login page to the req if user is arleady registered
 exports.home  =  ( (req, res) => {
-    try{
-    res.sendFile(path.join(__dirname,'../public','index.html'));}
-    catch{
-        res.status(404).send('server error');
+
+    if (parseInt(process.env.userNum) === 0){
+        try{
+            res.sendFile(path.join(__dirname,'../public','createdatabase.html'));}
+            catch{
+                res.status(404).send('server error');
+            }
     }
+
+
+    else if (parseInt(process.env.userNum) === 1){
+        res.redirect("/login");
+    }
+
+
+    else{
+        res.status(404).send("your database can't handle beyond one user check you enviroment variable");
+    }
+   
 });
 /* ****************************************************************************************** */
 
 
-/* *************************handles registiration part************************************************/
 
-exports.register  =  ((req, res) => {
-    try{
-    res.sendFile(path.join(__dirname,'../public','register.html'));}
-    catch{
-        res.status(404).send('server error');
-    }
-});
+
+
+
+/***********************handles  database initializations  */
+// creates every thing of database initializations
+const initializeDatabase =(dbName)=>{
+    //  implimentation of inital database
+
+};
+
+
+
+
+/* *************************handles registiration of user************************************************/
 
 /* it  stores user information to data base if the intered email is not in the database
- * and redirect the user to main page after storing the information*/
+ * and redirect the user to main dashboard after storing the information*/
 exports.createUser = async(req,res)=>{ 
     try{
         const saltingRound = 10;
-        const user         = await usersSchema.users.find({email:req.body.email});
+
+        initializeDatabase(req.databaseName);
+
+        const user         = await usersSchema.user.find({user:req.body.User});
         // it checks the user email whether is in the database 
         console.log(req.body);
-        if(user.length===0){
+        if(user.length === 0){
 
             // hashing password with salting property  
             bcrypt.hash(req.body.password,saltingRound, async(err,hash)=>{
             // it create user and stores to database if error not occurred while hashing the password 
                 if(!err){
                     try{
-                    await usersSchema.users.create({
-                        firstName:req.body.firstName,
-                        lastName:req.body.lastName,
-                        email:req.body.email,
-                        password:hash });
+                        // here posgressql is neded ########################
+                    await usersSchema.user.create({
+                        databaseName:req.body.Database,
+                        user:req.body.User,
+                        password:hash }).then(()=>{
+
+                            //update enviroment variable from 0 to 1
+                            const filePath = './config.env';
+                            // Step 1: Read the file content
+                            fs.readFile(filePath, 'utf8', (err, data) => {
+                                if (err) {
+                                    console.error(`Error reading the file: ${err}`);
+                                    return;
+                                }
+
+                                // Step 2: Modify the content
+                                const modifiedContent = data.replace('userNum=0', 'userNum=1');
+
+                                // Step 3: Write the modified content back to the file
+                                fs.writeFile(filePath, modifiedContent, 'utf8', (err) => {
+                                   
+                                    if (err) {
+                                        console.error(`Error writing the file: ${err}`);
+                                        return;
+                                    }
+
+                                    console.log('File has been updated!');
+                                    process.env.userNum = 1;
+                                
+                                });
+                            });
+
+                                fs.readFile('./config.env', 'utf8', (err, data) => {
+                                if (err) {
+                                    console.error(err);
+                                    return;
+                                }
+                                console.log(data);
+                                });
+
+                                console.log(process.env.userNum);
+
+                        });
                     // i will check how to get the inserted values without querying it back like blow
-                    const result = await usersSchema.users.find({email:req.body.email});
+                    const result = await usersSchema.user.find({user:req.body.User});//##########posgressql is needed here
                     const user   = result[0];
+
+                    console.log(user);
                     req.login(user,(err)=>{
                         if(err){
                             console.log(err);
@@ -62,7 +135,8 @@ exports.createUser = async(req,res)=>{
                            res.redirect('/mybookstore'); 
                         }
                     });
-                    res.sendFile(path.join(__dirname,'../public','login.html'));}
+                    res.sendFile(path.join(__dirname,'../public','login.html'));
+                }
                     catch{
                         console.log('data base error');
                         res.send('error occured');
@@ -76,7 +150,7 @@ exports.createUser = async(req,res)=>{
         }
 
         else{
-            res.status(200).json({ error: 'duplicated email' });}
+            res.redirect('/login');}
         }
     catch(err){
                 res.status(404).json({ error: 'server error' });
@@ -98,6 +172,11 @@ exports.login  =  ((req, res) => {
 });
 
 
+
+
+
+
+
 /* it checks if the user has registered and
  * redirect the user to  bookstore page if the entered password and email are correct*/
 
@@ -113,14 +192,14 @@ exports.authenticate =
     // varifies user 
 
     passport.use(new Strategy({
-        usernameField: 'email',
+        usernameField: 'User',
         passwordField: 'password'
     },
-    async function  verify(email,password,cb){
+    async function  verify(User,password,cb){
         console.log('test is in login process');
-    
+
             try{
-                const user     = await usersSchema.users.find({email: email});
+                const user     = await usersSchema.user.find({user:User});///######################posgressql is needed here
                 //checks whether the user exist in database and whether the user is unique in the database
                 if(user.length===1 ){
                     // comparing the input password from a user with the stored hashed password
@@ -152,8 +231,7 @@ exports.authenticate =
 // this page is the protect page in this system
 exports.bookStore  =  (req, res) => {
     if(req.isAuthenticated()){
-        res.sendFile(path.join(__dirname,'../public','mybookstore.html'));
-    
+        res.sendFile(path.join(__dirname,'../public/build','bookstore.html'));
     }else{
         res.redirect("/login");    
     }
