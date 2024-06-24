@@ -2,12 +2,23 @@
     margin-left: 2%;
 
 }
-body{
+
+body {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #afa6a6;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/*body{
     margin-left: 5%;
     background-color: rgb(68, 175, 211);
 
 
-}
+}*/
 .form{
     background-color: rgb(99, 115, 129);
     border-radius: 40px;

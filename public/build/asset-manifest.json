@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.857211fb.css",
-    "main.js": "/static/js/main.c921c583.js",
+    "main.css": "/static/css/main.a5cd67d7.css",
+    "main.js": "/static/js/main.31a730f1.js",
     "static/media/stack-of-books.png": "/static/media/stack-of-books.75c0ad0b36521a7fa5a4.png",
     "index.html": "/index.html",
-    "main.857211fb.css.map": "/static/css/main.857211fb.css.map",
-    "main.c921c583.js.map": "/static/js/main.c921c583.js.map"
+    "main.a5cd67d7.css.map": "/static/css/main.a5cd67d7.css.map",
+    "main.31a730f1.js.map": "/static/js/main.31a730f1.js.map"
   },
   "entrypoints": [
-    "static/css/main.857211fb.css",
-    "static/js/main.c921c583.js"
+    "static/css/main.a5cd67d7.css",
+    "static/js/main.31a730f1.js"
   ]
 }
